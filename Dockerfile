@@ -7,7 +7,7 @@ USER root
 
 # Golang
 RUN yum -y update \
-  && yum -y install chrpath ghc-containers-devel ghc-directory-devel ghc-json-devel ghc-mtl-devel ghc-parsec-devel \
+  && yum -y install haskell-platform chrpath ghc-containers-devel ghc-directory-devel ghc-json-devel ghc-mtl-devel ghc-parsec-devel \
     ghc-regex-tdfa-devel ghc-transformers-devel pandoc  \
   && yum clean all \
   && rm -rf /var/cache/yum
