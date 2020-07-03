@@ -9,8 +9,8 @@ RUN sed -i 's/^mirrorlist=/#mirrorlist=/' /etc/yum.repos.d/CentOS-Base.repo \
 
 # Yum
 RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
-    && yum localinstall -y https://yum.jc21.com/jc21-yum.rpm \
     && yum -y install deltarpm centos-release-scl \
+    && yum -y update \
     && yum-config-manager --enable rhel-server-rhscl-7-rpms \
     && yum -y update \
     && yum -y install devtoolset-7 which mock git wget curl kernel-devel rpmdevtools rpmlint rpm-build sudo gcc-c++ make automake autoconf yum-utils scl-utils scl-utils-build cmake libtool expect \
@@ -37,12 +37,12 @@ RUN chown root:root /etc/sudoers.d/*
 RUN sed -i '/Defaults    requiretty/c\#Defaults    requiretty' /etc/sudoers
 
 # Rpm User
-RUN adduser -G wheel rpmbuilder \
-    && mkdir -p /home/rpmbuilder/rpmbuild/{BUILD,SPECS,SOURCES,BUILDROOT,RPMS,SRPMS,tmp} \
-    && chmod -R 777 /home/rpmbuilder/rpmbuild
+RUN adduser -G wheel rpmbuilder -d /workspace \
+    && mkdir -p /workspace/rpmbuild/{BUILD,SPECS,SOURCES,BUILDROOT,RPMS,SRPMS,tmp} \
+    && chmod -R 777 /workspace/rpmbuild
 
-ADD .rpmmacros /home/rpmbuilder/
+ADD .rpmmacros /workspace/
 USER rpmbuilder
 
-WORKDIR /home/rpmbuilder
+WORKDIR /workspace
 
